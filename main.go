@@ -42,6 +42,7 @@ func main() {
 
 	//处理 404 请求
 	r.NoRoute(func(c *gin.Context) {
+		// c.Request 是 gin 封装的请求对象，所有用户的请求信息，都可以从这个对象中获取。
 		//获取标头信息 Accept 信息
 		acceptString := c.Request.Header.Get("Accept")
 
