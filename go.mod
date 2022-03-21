@@ -1,4 +1,4 @@
-module github.com/LeDuoo/Gohub
+module Gohub
 
 go 1.17
 
