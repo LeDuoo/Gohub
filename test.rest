@@ -1,0 +1,25 @@
+@baseUrl = https://jsonplaceholder.typicode.com
+
+### 发送 Get 请求
+
+GET {{baseUrl}}/posts
+
+### 发送 Post 请求
+
+POST {{baseUrl}}/post HTTP/1.1
+content-type: application/json
+
+{
+    "title": "This is title",
+    "body": "this is body",
+    "userId": 777
+}
+
+### 发送删除请求
+
+DELETE {{baseUrl}}/posts/50
+
+————————————————
+原文作者：Summer
+转自链接：https://learnku.com/courses/go-video/2022/vscode-as-go-development-editor/11306
+版权声明：著作权归作者所有。商业转载请联系作者获得授权，非商业转载请保留以上作者信息和原文链接。
