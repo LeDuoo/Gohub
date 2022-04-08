@@ -1,11 +1,11 @@
 package bootstrap
 
 import (
-	"errors"
-	"fmt"
+	"Gohub/app/models/user"
 	"Gohub/pkg/config"
 	"Gohub/pkg/database"
-	"Gohub/app/models/user"
+	"errors"
+	"fmt"
 	"time"
 
 	"gorm.io/driver/mysql"
