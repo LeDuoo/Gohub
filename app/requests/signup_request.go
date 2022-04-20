@@ -11,7 +11,7 @@ type SignupPhoneExistRequest struct { //omitempty必填字段
 }
 
 type SignupEmailExistRequest struct { //omitempty必填字段
-	Phone string `json:"email,omitempty" valid:"email"`
+	Email string `json:"email,omitempty" valid:"email"`
 }
 
 func SignupPhoneExist(data interface{}, c *gin.Context) map[string][]string {
