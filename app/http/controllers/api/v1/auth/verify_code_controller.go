@@ -7,7 +7,6 @@ import (
 	"Gohub/pkg/logger"
 	"Gohub/pkg/response"
 	"Gohub/pkg/verifycode"
-	"fmt"
 
 	"github.com/gin-gonic/gin"
 )
