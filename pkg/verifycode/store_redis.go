@@ -35,10 +35,9 @@ func (s *RedisStore) Get(key string, clear bool) (value string) {
     return val
 }
 
-// Verify 实现 verifycode.Store interface 的 Verify 方法
+// Verify 实现 verifycode.Store interface 的 Verify 方法 clear为是否清除redis中key对应数据
 func (s *RedisStore) Verify(key, answer string, clear bool) bool {
     v := s.Get(key, clear)
     return v == answer
 }
-
 

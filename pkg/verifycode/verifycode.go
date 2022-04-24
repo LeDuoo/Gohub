@@ -13,7 +13,7 @@ import (
 )
 
 type VerifyCode struct {
-    Store Store
+    Store Store //实现存储接口类型
 }
 
 var once sync.Once
