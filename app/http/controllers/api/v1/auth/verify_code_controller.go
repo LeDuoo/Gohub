@@ -49,20 +49,20 @@ func (vc *VerifyCodeController) SendUsingPhone(c *gin.Context) {
 }
 
 // SendUsingEmail 发送 Email 验证码
-func (vc *VerifyCodeController) SendUsingEmail(c *gin.Context)  {
-	
+func (vc *VerifyCodeController) SendUsingEmail(c *gin.Context) {
+
 	//1.验证表单参数是否正确
 	request := requests.VerifyCodeEmailRequest{} //所需参数
-    if ok := requests.Validate(c, &request, requests.VerifyCodeEmail); !ok {
-        return
-    }
+	if ok := requests.Validate(c, &request, requests.VerifyCodeEmail); !ok {
+		return
+	}
 
 	//2. 发送 SMS
 	err := verifycode.NewVerifyCode().SendEmail(request.Email)
 
 	if err != nil {
-		response.Abort500(c,"发送Email 验证码失败")
-	}else{
+		response.Abort500(c, "发送Email 验证码失败")
+	} else {
 		response.Success(c)
 	}
 }

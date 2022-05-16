@@ -2,6 +2,7 @@ package requests
 
 import (
 	"Gohub/app/requests/validators"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 	"github.com/thedevsaddam/govalidator"
@@ -47,9 +48,13 @@ func VerifyCodePhone(data interface{}, c *gin.Context) map[string][]string {
 	}
 
 	errs := validate(data, rules, message)
-
 	// 图片验证码
+	fmt.Println("data =============", data)
+
 	_data := data.(*VerifyCodePhoneRequest)
+	fmt.Println("_data =============", _data)
+	fmt.Println("_dataAnwer =============", _data.CaptchaAnswer)
+
 	errs = validators.ValidateCaptcha(_data.CaptchaID, _data.CaptchaAnswer, errs)
 
 	return errs
