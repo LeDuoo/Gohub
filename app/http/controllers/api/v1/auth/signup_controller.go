@@ -14,6 +14,7 @@ type SignupController struct {
 	v1.BaseAPIController
 }
 
+//检测手机号码是否存在接口
 func (sc *SignupController) IsPhoneExist(c *gin.Context) {
 	// 初始化请求对象
 	request := requests.SignupPhoneExistRequest{}
@@ -56,6 +57,7 @@ func (sc *SignupController) IsPhoneExist(c *gin.Context) {
 	})
 }
 
+//检测邮箱是否存在接口
 func (sc *SignupController) IsEmailExist(c *gin.Context) {
 	// 初始化请求对象
 	request := requests.SignupEmailExistRequest{}
@@ -97,6 +99,7 @@ func (sc *SignupController) IsEmailExist(c *gin.Context) {
 	})
 }
 
+//手机号码注册接口
 func (sc *SignupController) SignupUsingPhone(c *gin.Context) {
 
 	//验证表单
@@ -115,6 +118,35 @@ func (sc *SignupController) SignupUsingPhone(c *gin.Context) {
 	//调用创建用户方法
 	_user.Create()
 
+	if _user.ID > 0 {
+		response.CreatedJSON(c, gin.H{
+			"data": _user,
+		})
+	} else {
+		response.Abort500(c, "创建用户失败, 请稍后尝试~")
+	}
+}
+
+//邮箱注册接口
+func (sc *SignupController) SignupUsingEmail(c *gin.Context) {
+	//表单验证
+	//获取接口所需参数格式
+	request := requests.SignupUsingEmailRequest{}
+
+	if ok := requests.Validate(c, &request, requests.SignupUsingEmail); !ok {
+		return
+	}
+
+	//验证通过
+	_user := user.User{
+		Name:     request.Name,
+		Email:    request.Email,
+		Password: request.Password,
+	}
+
+	_user.Create()
+
+	//创建成功返回用户信息
 	if _user.ID > 0 {
 		response.CreatedJSON(c, gin.H{
 			"data": _user,
