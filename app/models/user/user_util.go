@@ -23,3 +23,12 @@ func GetUserByPhone(phone string) (userModel User) {
 	database.DB.Where("phone = ?", phone).First(&userModel)
 	return
 }
+
+//根据手机号码/email/名称搜索用户
+func GetByMutil(loginID string)(userModel User){
+	database.DB.Where("phone = ?",loginID).
+	Or("email = ?",loginID).
+	Or("name = ?",loginID).
+	First(&userModel)
+	return
+}

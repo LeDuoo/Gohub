@@ -31,12 +31,13 @@ func RegisterAPIRoutes(r *gin.Engine) {
 			authGroup.POST("/signup/using-phone", suc.SignupUsingPhone)
 			//邮箱注册用户
 			authGroup.POST("/signup/using-email", suc.SignupUsingEmail)
-			
+
 			//登录控制器
 			lc := new(auth.LoginController)
 			//手机号码登录
 			authGroup.POST("/login/login-by-phone", lc.LoginByPhone)
-
+			//账号密码登录
+			authGroup.POST("/login/login-by-password", lc.LoginByPassword)
 
 		}
 
