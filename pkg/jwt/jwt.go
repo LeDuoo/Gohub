@@ -82,7 +82,7 @@ func (jwt *JWT) ParserToken(c *gin.Context) (*JWTCustomClaims, error) {
 		return nil, ErrTokenInvalid
 	}
 
-	//3 .将 token 中的 claims信息解析出来喝 JWTCustomClaims数据结构进行校验
+	//3 .将 token 中的 claims信息解析出来和 JWTCustomClaims数据结构进行校验
 	if claims, ok := token.Claims.(*JWTCustomClaims); ok && token.Valid {
 		return claims,nil
 	}

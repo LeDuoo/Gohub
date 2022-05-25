@@ -32,3 +32,9 @@ func GetByMutil(loginID string)(userModel User){
 	First(&userModel)
 	return
 }
+
+//Get 根据用户id获取用户
+func Get(userId string)(userModel User){
+	database.DB.Where("id = ?",userId).First(&userModel)
+	return
+}
