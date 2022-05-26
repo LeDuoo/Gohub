@@ -18,7 +18,7 @@ type User struct {
 
     models.CommonTimestampsField
 }
-
+//创建用户
 func(userModel *User) Create(){
     database.DB.Create(&userModel)
 }
@@ -26,4 +26,10 @@ func(userModel *User) Create(){
 // ComparePassword 密码是否正确
 func (userModel *User) ComparePassword(_password string) bool {
     return hash.BcryptCheck(_password, userModel.Password)
+}
+
+//保存修改数据
+func(userModel *User) Save()(RowsAffected int64){
+   result := database.DB.Save(&userModel)
+    return result.RowsAffected
 }
