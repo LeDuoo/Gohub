@@ -45,6 +45,8 @@ func RegisterAPIRoutes(r *gin.Engine) {
 			pc := new(auth.PasswordController)
 			//通过手机号码重置密码
 			authGroup.POST("/password-reset/using-phone", pc.ResetByPhone)
+			//通过邮箱重置密码
+			authGroup.POST("/password-reset/using-email", pc.ResetByEamil)
 		}
 
 	}
