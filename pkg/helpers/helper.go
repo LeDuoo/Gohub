@@ -7,6 +7,7 @@ import (
 	"io"
 	"reflect"
 	"time"
+	mathrand "math/rand"
 )
 
 // Empty 类似于 PHP 的 empty() 函数
@@ -69,4 +70,15 @@ func FirstElement(args []string) string {
         return args[0]
     }
     return ""
+}
+
+// RandomString 生成长度为 length 的随机字符串
+func RandomString(length int)string{
+	mathrand.Seed(time.Now().UnixNano())//设置随机数种子，加上这行代码，可以保证每次随机都是随机的
+	letters := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	b := make([]byte,length)
+	for i := range b {
+		b[i] =letters[mathrand.Intn(len(letters))]
+	}
+	return string(b)
 }
