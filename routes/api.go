@@ -53,6 +53,10 @@ func RegisterAPIRoutes(r *gin.Engine) {
 			authGroup.POST("/password-reset/using-phone", middlewares.GuestJWT(), pc.ResetByPhone)
 			//通过邮箱重置密码
 			authGroup.POST("/password-reset/using-email", middlewares.GuestJWT(), pc.ResetByEamil)
+
+			upc := new(auth.UploadOssController)
+			//work code Base64转换图片后上传至阿里云
+			authGroup.POST("upload-oss/base64-image-upload", upc.Base64ImageUpload)
 		}
 
 	}
