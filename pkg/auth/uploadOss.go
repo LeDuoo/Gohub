@@ -66,7 +66,7 @@ func EncodeBase64Upload(c *gin.Context, Base64Data []string) ([]string, error) {
 			f.Write(data)
 
 			//写入成功后上传至阿里云Oss
-			imageUrl, err := UploadFileByLocal(c, localPath, imgName)
+			imageUrl, err := UploadFileByLocal(localPath, imgName)
 
 			if err != nil {
 				logger.Fatal(c.Request.URL.Path+"上传阿里云失败",
@@ -130,7 +130,7 @@ func Base64RemovePrefix(imgData string) (string, string) {
 }
 
 //UploadFileByLocal 上传图片至阿里云
-func UploadFileByLocal(c *gin.Context, localPath string, imgName string) (string, error) {
+func UploadFileByLocal(localPath string, imgName string) (string, error) {
 	//上传地址
 	endpoint := config.GetString("oss.end_point")
 	// 阿里云账号AccessKey

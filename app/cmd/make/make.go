@@ -67,6 +67,7 @@ func init() {
 	// 注册 make 的子命令
 	CmdMake.AddCommand(
 		CmdMakeCMD,
+		CmdMakeModel,
 	)
 }
 
@@ -74,12 +75,12 @@ func init() {
 func makeModelFromString(name string) Model {
 	//name := MemberShops
 	model := Model{}
-	model.StructName = str.Singular(strcase.ToCamel(name))//MemberShops->MemberShop
-	model.StructNamePlural = str.Plural(model.StructName)//MemberShop->MemberShops
-	model.TableName = str.Snake(model.StructNamePlural) //MemberShops->member_shops
-	model.VariableName = str.LowerCamel(model.StructName) //MemberShop->memberShop
-	model.PackageName = str.Snake(model.StructName)//MemberShop->member_shop
-	model.VariableNamePlural = str.LowerCamel(model.StructNamePlural)//MemberShops->memberShops
+	model.StructName = str.Singular(strcase.ToCamel(name))            //MemberShops->MemberShop
+	model.StructNamePlural = str.Plural(model.StructName)             //MemberShop->MemberShops
+	model.TableName = str.Snake(model.StructNamePlural)               //MemberShops->member_shops
+	model.VariableName = str.LowerCamel(model.StructName)             //MemberShop->memberShop
+	model.PackageName = str.Snake(model.StructName)                   //MemberShop->member_shop
+	model.VariableNamePlural = str.LowerCamel(model.StructNamePlural) //MemberShops->memberShops
 	return model
 }
 
