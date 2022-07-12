@@ -31,6 +31,7 @@ func Add(name string, up migrationFunc, down migrationFunc) {
 // getNugrationFile 通过迁移文件的名称来获取到 MigrationFile对象
 func getMigrationFile(name string) MigrationFile {
 	for _, mfile := range migrationFiles {
+
 		if name == mfile.FileName {
 			return mfile
 		}
@@ -38,7 +39,7 @@ func getMigrationFile(name string) MigrationFile {
 	return MigrationFile{}
 }
 
-// isNotMigrated 判断迁移是否已执行
+// isNotMigrated 判断迁移是否已执行  MigrationFile对象在getNugrationFile中已获取
 func (mfile MigrationFile) isNotMigrated(migrations []Migration) bool {
 	for _, migration := range migrations {
 		if migration.Migration == mfile.FileName {

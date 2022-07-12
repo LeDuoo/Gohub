@@ -60,13 +60,12 @@ func (migrator *Migrator) Up() {
 
 	//获取所有迁移数据
 	migrations := []Migration{}
-	migrator.DB.Find(&migrations)
+	migrator.DB.Find(&migrations) //查询migrations表所有数据
 
 	// 可以通过此值来判断数据库是否已是最新
 	runed := false
 	// 对迁移文件进行遍历, 如果没有执行过, 就执行up 回调
 	for _, mfile := range migrateFiles {
-
 		// 对比文件名称, 看是否已经运行过
 		if mfile.isNotMigrated(migrations) {
 			migrator.runUpMigration(mfile, batch)
@@ -86,7 +85,6 @@ func (migrator *Migrator) readAllMigrationFiles() []MigrationFile {
 	// 默认是会按照文件名称进行排序
 	files, err := ioutil.ReadDir(migrator.Folder)
 	console.ExitIf(err)
-
 	var migrateFiles []MigrationFile
 	for _, f := range files {
 
@@ -98,6 +96,7 @@ func (migrator *Migrator) readAllMigrationFiles() []MigrationFile {
 
 		// 判断迁移文件是否可用, 再放进migrateFiles 数组中
 		if len(mfile.FileName) > 0 {
+
 			migrateFiles = append(migrateFiles, mfile)
 		}
 	}

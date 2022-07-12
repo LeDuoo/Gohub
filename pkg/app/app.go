@@ -1,4 +1,4 @@
-//Package app 应用吸你血
+//Package app 应用
 package app
 
 import (
