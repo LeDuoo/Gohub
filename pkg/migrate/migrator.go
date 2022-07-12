@@ -78,6 +78,21 @@ func (migrator *Migrator) Up() {
 	}
 }
 
+func (migrator *Migrator) Rollback() {
+
+	//获取最后一批次迁移数据的批次号
+	lastMigration := Migration{}
+	migrator.DB.Order("id DESC").First(&lastMigration)
+	migrations := []Migration{}
+	//根据最后批次号获取最后一批次所有数据
+	migrator.DB.Where("batch = ?", lastMigration.Batch).Order("id DESC").Find(&migrations)
+
+	//回滚最后一批次的迁移
+	if !migrator.rollbackMigrations(migrations) {
+		console.Success("[migrations] tabe is empty, nothing to rollback")
+	}
+}
+
 //从文件目录读取文件, 保证正确的时间排序
 func (migrator *Migrator) readAllMigrationFiles() []MigrationFile {
 
@@ -143,4 +158,32 @@ func (migrator *Migrator) runUpMigration(mfile MigrationFile, batch int) {
 		Batch:     batch,
 	}).Error
 	console.ExitIf(err)
+}
+
+// 回退迁移, 按照倒序执行迁移的 down方法
+func (migrator *Migrator) rollbackMigrations(migrations []Migration) bool {
+
+	//标记是否真的有执行了迁移回退的操作
+	runed := false
+
+	for _, _migration := range migrations {
+
+		//友好提示
+		console.Warning("rollback " + _migration.Migration)
+
+		// 执行迁移文件的down方法
+		mfile := getMigrationFile(_migration.Migration) //通过迁移文件的名称来获取到 MigrationFile对象
+
+		if mfile.Down != nil {
+			mfile.Down(database.DB.Migrator(), database.SQLDB)
+		}
+		runed = true
+
+		//回退成功了就删除这条记录
+		migrator.DB.Delete(&_migration)
+		// 打印运行状态
+		console.Success("finsh " + mfile.FileName)
+	}
+
+	return runed
 }
