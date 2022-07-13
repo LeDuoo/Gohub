@@ -1,6 +1,7 @@
 package routes
 
 import (
+	controllers "Gohub/app/http/controllers/api/v1"
 	"Gohub/app/http/controllers/api/v1/auth"
 	"Gohub/app/http/controllers/api/v1/middlewares"
 
@@ -57,8 +58,15 @@ func RegisterAPIRoutes(r *gin.Engine) {
 			upc := new(auth.UploadOssController)
 			//work code Base64转换图片后上传至阿里云
 			authGroup.POST("upload-oss/base64-image-upload", upc.Base64ImageUpload)
+
 		}
 
 	}
+
+	//用户控制器
+	uc := new(controllers.UsersController)
+
+	//获取当前用户
+	v1.GET("/user", middlewares.AuthJWT(), uc.CurrentUser)
 
 }

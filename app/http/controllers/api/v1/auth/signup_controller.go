@@ -102,7 +102,6 @@ func (sc *SignupController) IsEmailExist(c *gin.Context) {
 
 //手机号码注册接口
 func (sc *SignupController) SignupUsingPhone(c *gin.Context) {
-
 	//验证表单
 	request := requests.SignupUsingPhoneRequest{}
 

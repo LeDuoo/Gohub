@@ -72,6 +72,7 @@ require (
 )
 
 require (
+	github.com/bxcodec/faker/v3 v3.8.0 // indirect
 	github.com/goccy/go-json v0.9.7 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.1 // indirect
 	golang.org/x/net v0.0.0-20211112202133-69e39bad7dc2 // indirect
