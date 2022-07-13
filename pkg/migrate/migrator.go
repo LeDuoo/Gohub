@@ -78,6 +78,7 @@ func (migrator *Migrator) Up() {
 	}
 }
 
+// Rollback 回滚会后一次迁移
 func (migrator *Migrator) Rollback() {
 
 	//获取最后一批次迁移数据的批次号
@@ -91,6 +92,29 @@ func (migrator *Migrator) Rollback() {
 	if !migrator.rollbackMigrations(migrations) {
 		console.Success("[migrations] tabe is empty, nothing to rollback")
 	}
+}
+
+// Reset 回滚所有迁移
+func (migrator *Migrator) Reset() {
+
+	migrations := []Migration{}
+
+	//按照倒序读取所有迁移文件
+	migrator.DB.Order("id DESC").Find(&migrations)
+
+	if !migrator.rollbackMigrations(migrations) {
+		console.Success("[migrations] table is empty, nothing to reset")
+	}
+}
+
+//Refresh 回滚所有迁移, 并运行所有迁移
+func (migrator *Migrator) Refresh() {
+
+	//回滚所有迁移
+	migrator.Reset()
+
+	//再次执行所有迁移文件
+	migrator.Up()
 }
 
 //从文件目录读取文件, 保证正确的时间排序
@@ -172,7 +196,7 @@ func (migrator *Migrator) rollbackMigrations(migrations []Migration) bool {
 		console.Warning("rollback " + _migration.Migration)
 
 		// 执行迁移文件的down方法
-		mfile := getMigrationFile(_migration.Migration) //通过迁移文件的名称来获取到 MigrationFile对象
+		mfile := getMigrationFile(_migration.Migration) //通过迁移文件的名称来获取到 MigrationFile对象, 再由对象进行回滚或迁移操作
 
 		if mfile.Down != nil {
 			mfile.Down(database.DB.Migrator(), database.SQLDB)
