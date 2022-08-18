@@ -2,6 +2,9 @@
 package seed
 
 import (
+	"Gohub/pkg/console"
+	"Gohub/pkg/database"
+
 	"gorm.io/gorm"
 )
 
@@ -30,4 +33,51 @@ func Add(name string, fn SeederFunc) {
 //SetRunOrder 设置 按顺序执行的Seeder 数组
 func SetRunOrder(names []string) {
 	orderedSeederNames = names
+}
+
+// GetSeeder 通过名称来获取 Seeder 对象
+func GetSeeder(name string) Seeder {
+	for _, sdr := range seeders {
+		if name == sdr.Name {
+			return sdr
+		}
+	}
+	return Seeder{}
+}
+
+// RunAll 运行所有 Seeder
+func RunAll() {
+
+	//先运行 ordered 的
+	executed := make(map[string]string)
+	for _, name := range orderedSeederNames {
+		sdr := GetSeeder(name)
+		if len(sdr.Name) > 0 {
+			console.Warning("Running Ordered Seeder: " + sdr.Name)
+			sdr.Func(database.DB)
+			executed[name] = name
+		}
+	}
+
+	//再运行剩下的
+	for _, sdr := range seeders {
+		//过滤已运行的
+		if _, ok := executed[sdr.Name]; !ok {
+			console.Warning("Running Seeder: " + sdr.Name)
+			sdr.Func(database.DB)
+		}
+	}
+
+}
+
+//RunSeeder 运行单个Seeder
+func RunSeeder(name string) {
+
+	for _, sdr := range seeders {
+		if name == sdr.Name {
+			console.Warning("Running Seeder: " + sdr.Name)
+			sdr.Func(database.DB)
+			break
+		}
+	}
 }
