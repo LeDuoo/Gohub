@@ -31,16 +31,22 @@ func GetUserByEmail(email string) (userModel User) {
 }
 
 //根据手机号码/email/名称搜索用户
-func GetByMutil(loginID string)(userModel User){
-	database.DB.Where("phone = ?",loginID).
-	Or("email = ?",loginID).
-	Or("name = ?",loginID).
-	First(&userModel)
+func GetByMutil(loginID string) (userModel User) {
+	database.DB.Where("phone = ?", loginID).
+		Or("email = ?", loginID).
+		Or("name = ?", loginID).
+		First(&userModel)
 	return
 }
 
 //Get 根据用户id获取用户
-func Get(userId string)(userModel User){
-	database.DB.Where("id = ?",userId).First(&userModel)
+func Get(userId string) (userModel User) {
+	database.DB.Where("id = ?", userId).First(&userModel)
+	return
+}
+
+//Index 获取所有用户
+func All() (users []User) {
+	database.DB.Find(&users)
 	return
 }
