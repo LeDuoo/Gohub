@@ -1,7 +1,11 @@
 package user
 
 import (
+	"Gohub/pkg/app"
 	"Gohub/pkg/database"
+	"Gohub/pkg/paginator"
+
+	"github.com/gin-gonic/gin"
 )
 
 // IsEmailExist 判断email 是否被注册
@@ -50,3 +54,16 @@ func All() (users []User) {
 	database.DB.Find(&users)
 	return
 }
+
+// Paginate 分页内容
+func Paginate(c *gin.Context, perPage int) (users []User, paging paginator.Paging) {
+    paging = paginator.Paginate(
+        c,
+        database.DB.Model(User{}),
+        &users,
+        app.V1URL(database.TableName(&User{})),
+        perPage,
+    )
+    return
+}
+

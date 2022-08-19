@@ -105,3 +105,10 @@ func deleteAllSqliteTables() error {
 	}
 	return nil
 }
+
+//TableName 方法方便我们获取表名称，这里我们用来拼接 Restfull URL
+func TableName(obj interface{}) string{
+	stmt := &gorm.Statement{DB: DB}
+	stmt.Parse(obj)
+	return stmt.Schema.Table
+}
