@@ -16,7 +16,7 @@ var CmdMakeMigration = &cobra.Command{
 }
 
 func runMakeMigration(cmd *cobra.Command, args []string) {
-	fmt.Println("第二个参数", args[1])
+
 	//日期格式化
 	timeStr := app.TimenowInTimezone().Format("2006_01_02_150405")
 

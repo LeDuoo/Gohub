@@ -25,7 +25,6 @@ func Validate(c *gin.Context, obj interface{}, handler ValidatorFunc) bool {
 	}
 
 	//2.表单验证,是否满足验证方法里的参数要求
-
 	errs := handler(obj, c)
 
 	//3. 判断是否通过

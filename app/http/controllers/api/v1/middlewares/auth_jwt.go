@@ -11,6 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+//检测用户是否登录
 func AuthJWT() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// 从标头 Authorization:Bearer xxxxx 中获取信息，并验证 JWT 的准确性

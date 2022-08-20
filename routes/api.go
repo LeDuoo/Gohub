@@ -70,7 +70,17 @@ func RegisterAPIRoutes(r *gin.Engine) {
 	v1.GET("/user", middlewares.AuthJWT(), uc.CurrentUser)
 	userGroup := v1.Group("/users")
 	{
+		//获取所有用户列表
 		userGroup.GET("", uc.Index)
 	}
 
+	//分类控制器
+	cgc := new(controllers.CategoriesController)
+
+	//分类路由分组
+	cgcGroup := v1.Group("/categories")
+	{
+		//创建分类
+		cgcGroup.POST("/create", middlewares.AuthJWT(), cgc.Store)
+	}
 }
