@@ -8,7 +8,7 @@ import (
 	"github.com/thedevsaddam/govalidator"
 )
 
-// ValidatorFunc 验证函数类型
+// ValidatorFunc 验证函数类型 自定义的 ValidatorFunc 类型，允许我们将验证器方法作为回调函数传参。解析完请求后，调用回调函数验证请求：
 type ValidatorFunc func(interface{}, *gin.Context) map[string][]string
 
 //根据传入函数验证参数是否正确
