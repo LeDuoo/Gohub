@@ -1,4 +1,4 @@
-tmp
+tmp/
 .env
 gohub
 .DS_Store
