@@ -4,6 +4,7 @@ import (
 	"Gohub/app/models/category"
 	"Gohub/app/requests"
 	"Gohub/pkg/response"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -58,4 +59,25 @@ func (ctrl *CategoriesController) Update(c *gin.Context) {
 	} else {
 		response.Abort500(c)
 	}
+}
+
+func (ctrl *CategoriesController) List(c *gin.Context) {
+	//验证分页
+	request := requests.PaginationRequest{}
+	if ok := requests.Validate(c, &request, requests.Pagination); !ok {
+		return
+	}
+	perPage := 0
+	if request.PerPage != "" {
+		perPage, _ = strconv.Atoi(request.PerPage)
+
+	} else {
+		perPage = 10
+	}
+
+	data, pager := category.Paginate(c, perPage)
+	response.JSON(c, gin.H{
+		"data":  data,
+		"pager": pager,
+	})
 }

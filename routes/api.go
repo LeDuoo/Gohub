@@ -80,6 +80,8 @@ func RegisterAPIRoutes(r *gin.Engine) {
 	//分类路由分组
 	cgcGroup := v1.Group("/categories")
 	{
+		//分类列表
+		cgcGroup.GET("/list", middlewares.AuthJWT(), cgc.List)
 		//创建分类
 		cgcGroup.POST("/create", middlewares.AuthJWT(), cgc.Store)
 		//修改分类

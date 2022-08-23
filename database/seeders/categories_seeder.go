@@ -12,11 +12,11 @@ import (
 
 func init() {
 
-    seed.Add("Seed{{StructNamePlural}}Table", func(db *gorm.DB) {
+    seed.Add("SeedCategoriesTable", func(db *gorm.DB) {
 
-        {{VariableNamePlural}}  := factories.Make{{StructNamePlural}}(10)
+        categories  := factories.MakeCategories(10)
 
-        result := db.Table("{{TableName}}").Create(&{{VariableNamePlural}})
+        result := db.Table("categories").Create(&categories)
 
         if err := result.Error; err != nil {
             logger.LogIf(err)
