@@ -83,8 +83,10 @@ func RegisterAPIRoutes(r *gin.Engine) {
 		//分类列表
 		cgcGroup.GET("/list", middlewares.AuthJWT(), cgc.List)
 		//创建分类
-		cgcGroup.POST("/create", middlewares.AuthJWT(), cgc.Store)
+		cgcGroup.POST("/create", middlewares.AuthJWT(), cgc.Create)
 		//修改分类
 		cgcGroup.PUT("/update/:id", middlewares.AuthJWT(), cgc.Update)
+		//删除分类
+		cgcGroup.DELETE("/delete/:id", middlewares.AuthJWT(), cgc.Delete)
 	}
 }

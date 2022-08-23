@@ -13,7 +13,8 @@ type CategoriesController struct {
 	BaseAPIController
 }
 
-func (ctrl *CategoriesController) Store(c *gin.Context) {
+//新增分类
+func (ctrl *CategoriesController) Create(c *gin.Context) {
 
 	request := requests.CategoryRequest{}
 	if ok := requests.Validate(c, &request, requests.CategorySave); !ok {
@@ -32,6 +33,7 @@ func (ctrl *CategoriesController) Store(c *gin.Context) {
 	}
 }
 
+//修改分类
 func (ctrl *CategoriesController) Update(c *gin.Context) {
 
 	//根据url传入id获取模型对象
@@ -39,6 +41,7 @@ func (ctrl *CategoriesController) Update(c *gin.Context) {
 
 	if categoryModel.ID == 0 {
 		response.Abort404(c)
+		return
 	}
 
 	//验证参数
@@ -61,6 +64,7 @@ func (ctrl *CategoriesController) Update(c *gin.Context) {
 	}
 }
 
+//分类列表
 func (ctrl *CategoriesController) List(c *gin.Context) {
 	//验证分页
 	request := requests.PaginationRequest{}
@@ -80,4 +84,23 @@ func (ctrl *CategoriesController) List(c *gin.Context) {
 		"data":  data,
 		"pager": pager,
 	})
+}
+
+//删除分类
+func (ctrl *CategoriesController) Delete(c *gin.Context) {
+	//根据URl传参获取model对象
+	categoryModel := category.Get(c.Param("id"))
+	if categoryModel.ID == 0 {
+		response.Abort404(c)
+		return
+	}
+
+	//删除分类
+	rowsAffected := categoryModel.Delete()
+	if rowsAffected > 0 {
+		response.Success(c)
+		return
+	}
+
+	response.Abort500(c, "删除失败,请稍后再试~")
 }
