@@ -89,4 +89,23 @@ func RegisterAPIRoutes(r *gin.Engine) {
 		//删除分类
 		cgcGroup.DELETE("/delete/:id", middlewares.AuthJWT(), cgc.Delete)
 	}
+
+	//文章控制器
+	ac := new(controllers.ArticlesController)
+
+	//文章路由分组
+	acGroup := v1.Group("/articles")
+	{
+		//文章列表
+		acGroup.GET("/list", middlewares.AuthJWT(), ac.List)
+
+		//创建文章
+		acGroup.POST("/create", middlewares.AuthJWT(), ac.Create)
+
+		//修改文章
+		acGroup.PUT("/update/:id", middlewares.AuthJWT(), ac.Update)
+
+		//删除文章
+		acGroup.DELETE("/delete/:id", middlewares.AuthJWT(), ac.Delete)
+	}
 }

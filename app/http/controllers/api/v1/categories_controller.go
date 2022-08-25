@@ -71,12 +71,9 @@ func (ctrl *CategoriesController) List(c *gin.Context) {
 	if ok := requests.Validate(c, &request, requests.Pagination); !ok {
 		return
 	}
-	perPage := 0
+	perPage := 10
 	if request.PerPage != "" {
 		perPage, _ = strconv.Atoi(request.PerPage)
-
-	} else {
-		perPage = 10
 	}
 
 	data, pager := category.Paginate(c, perPage)
