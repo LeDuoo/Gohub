@@ -35,8 +35,8 @@ func Paginate(c *gin.Context, perPage int, whereMap interface{}) (articles []Art
 	dbQuery := database.DB.Model(Article{})
 	whereData := whereMap.(map[string]string)
 	if len(whereData) > 0 {
-		// dbQuery = database.DB.Where(whereData).First(&articles)//可多条件查询   查询规则为 =
-		dbQuery = database.DB.Where("title like ?", whereData["title"]+"%").First(&articles) //模糊查询 需多条件时用and 例 where(user_id = ? and item_name like ?", userId, title+"%)
+		 //模糊查询 需多条件时用and 例 where(user_id = ? and item_name like ?", userId, title+"%"")
+		dbQuery = dbQuery.Where("title like ?", whereData["title"]+"%")
 	}
 
 	paging = paginator.Paginate(
