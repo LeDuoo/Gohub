@@ -29,17 +29,25 @@ func IsExist(field, value string) bool {
 	return count > 0
 }
 
-func Paginate(c *gin.Context, perPage int, whereMap interface{}) (topics []Topic, paging paginator.Paging) {
+func Paginate(c *gin.Context, perPage int) (topics []Topic, paging paginator.Paging) {
+
+	whereMap := make(map[string]interface{})
+	//条件搜索
+	if title := c.Query("title"); title != "" {
+		whereMap["title"] = title
+	}
+	if id := c.Query("id"); id != "" {
+		whereMap["id"] = id
+	}
 	dbQuery := database.DB.Model(Topic{})
-	whereArray := whereMap.(map[string]interface{})
-	if len(whereArray) > 0 {
+	if len(whereMap) > 0 {
 		where := ""
 		whereAnd := "and"
-		if title, ok := whereArray["title"]; ok {
+		if title, ok := whereMap["title"]; ok {
 			where = "title like '" + title.(string) + "%'"
 		}
 
-		if id, ok := whereArray["id"]; ok {
+		if id, ok := whereMap["id"]; ok {
 			if where != "" {
 				where = where + whereAnd + " id = " + id.(string)
 			} else {

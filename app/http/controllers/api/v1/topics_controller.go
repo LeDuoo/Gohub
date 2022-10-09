@@ -3,6 +3,7 @@ package v1
 import (
 	"Gohub/app/models/category"
 	"Gohub/app/models/topic"
+	"Gohub/app/policies"
 	"Gohub/app/requests"
 	"Gohub/pkg/auth"
 	"Gohub/pkg/response"
@@ -45,21 +46,12 @@ func (ctrl *TopicsController) List(c *gin.Context) {
 		return
 	}
 
-	whereMap := make(map[string]interface{})
-	//条件搜索
-	if title := c.Query("title"); title != "" {
-		whereMap["title"] = title
-	}
-	if id := c.Query("id"); id != "" {
-		whereMap["id"] = id
-	}
-
 	PerPage := 10
 	if request.PerPage != "" {
 		PerPage, _ = strconv.Atoi(request.PerPage)
 	}
 
-	data, pager := topic.Paginate(c, PerPage, whereMap)
+	data, pager := topic.Paginate(c, PerPage)
 
 	response.JSON(c, gin.H{
 		"data":  data,
@@ -75,6 +67,11 @@ func (ctrl *TopicsController) Update(c *gin.Context) {
 
 	if topicModel.ID == 0 {
 		response.Abort404(c)
+		return
+	}
+
+	if ok := policies.CanmodifyTopic(c, topicModel); !ok {
+		response.Abort403(c)
 		return
 	}
 
