@@ -11,15 +11,10 @@ import (
 // ValidatorFunc 验证函数类型 自定义的 ValidatorFunc 类型，允许我们将验证器方法作为回调函数传参。解析完请求后，调用回调函数验证请求：
 type ValidatorFunc func(interface{}, *gin.Context) map[string][]string
 
-//根据传入函数验证参数是否正确
+// Validate 根据传入函数验证参数是否正确
 func Validate(c *gin.Context, obj interface{}, handler ValidatorFunc) bool {
 	//1.解析请求,是否满足obj的参数要求,支持JSON数据,表单请求和URL Query
 	if err := c.ShouldBind(obj); err != nil {
-		// c.AbortWithStatusJSON(http.StatusUnprocessableEntity,gin.H{
-		// 	"message" : "请求解析错误, 请确认请求格式是否正确. 上传文件请使用mutipart 标头, 参数请使用JSON 格式.",
-		// 	"error"	  : err.Error(),
-		// })
-		// fmt.Println(err.Error())
 		response.BadRequest(c, err, "请求解析错误, 请确认请求格式是否正确. 上传文件请使用mutipart 标头, 参数请使用JSON 格式.")
 		return false
 	}
@@ -29,10 +24,6 @@ func Validate(c *gin.Context, obj interface{}, handler ValidatorFunc) bool {
 
 	//3. 判断是否通过
 	if len(errs) > 0 {
-		// c.AbortWithStatusJSON(http.StatusUnprocessableEntity, gin.H{
-		// 	"message" : "请求验证不通过,具体请查看 errors",
-		// 	"errors"	  : errs,
-		// })
 		response.ValidationError(c, errs)
 
 		return false

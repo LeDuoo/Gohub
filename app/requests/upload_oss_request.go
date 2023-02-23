@@ -21,7 +21,7 @@ func Base64ImageUpload(data interface{}, c *gin.Context) map[string][]string {
 	// 自定义验证出错时的提示
 	messages := govalidator.MapData{
 		"base64_data": []string{
-			"required:Base64编码为必填参数, 参数名称:phone",
+			"required:Base64编码为必填参数, 参数名称:base64_data",
 		},
 	}
 

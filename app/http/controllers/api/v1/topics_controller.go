@@ -121,3 +121,12 @@ func (ctrl *TopicsController) Delete(c *gin.Context) {
 	}
 	response.Abort500(c, "删除失败, 请稍后尝试~")
 }
+
+func (ctrl *TopicsController) Show(c *gin.Context) {
+	topicModel := topic.Get(c.Param("id"))
+	if topicModel.ID == 0 {
+		response.Abort404(c)
+		return
+	}
+	response.Data(c, topicModel)
+}

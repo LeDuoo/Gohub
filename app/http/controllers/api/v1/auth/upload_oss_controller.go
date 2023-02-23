@@ -14,7 +14,6 @@ type UploadOssController struct {
 	v1.BaseAPIController
 }
 
-//检测手机号码是否存在接口
 func (uoc *UploadOssController) Base64ImageUpload(c *gin.Context) {
 	// 初始化请求对象
 	request := requests.Base64ImageUploadRequest{}
