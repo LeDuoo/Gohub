@@ -12,7 +12,7 @@ var CmdMakeMigration = &cobra.Command{
 	Use:   "migration",
 	Short: "Create a migration file, example: make migration add_users_table",
 	Run:   runMakeMigration,
-	Args:  cobra.ExactArgs(2), // 只允许且必须传1个参数
+	Args:  cobra.ExactArgs(2), // 参数数量 1-迁移模型名称 模型内变量名
 }
 
 func runMakeMigration(cmd *cobra.Command, args []string) {

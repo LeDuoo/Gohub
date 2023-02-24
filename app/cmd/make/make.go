@@ -95,6 +95,7 @@ func createFileFromStub(filePath string, stubName string, model Model, variables
 
 	// 实现最后一个参数可选
 	replaces := make(map[string]string)
+
 	if len(variables) > 0 {
 		replaces = variables[0].(map[string]string)
 	}
@@ -118,6 +119,7 @@ func createFileFromStub(filePath string, stubName string, model Model, variables
 	replaces["{{StructNamePlural}}"] = model.StructNamePlural
 	replaces["{{PackageName}}"] = model.PackageName
 	replaces["{{TableName}}"] = model.TableName
+	replaces["{{CreateCount}}"] = replaces["createCount"]
 
 	// 对模板内容做变量替换
 	for search, replace := range replaces {

@@ -111,16 +111,23 @@ func RegisterAPIRoutes(r *gin.Engine) {
 
 	//话题分组
 	tp := new(controllers.TopicsController)
-	tpgroup := v1.Group("/topics")
+	tpGroup := v1.Group("/topics")
 	{
-		tpgroup.POST("/create", middlewares.AuthJWT(), tp.Create)
+		tpGroup.POST("/create", middlewares.AuthJWT(), tp.Create)
 
-		tpgroup.GET("/list", middlewares.AuthJWT(), tp.List)
+		tpGroup.GET("/list", middlewares.AuthJWT(), tp.List)
 
-		tpgroup.GET("/info/:id", tp.Show)
+		tpGroup.GET("/info/:id", tp.Show)
 
-		tpgroup.PUT("/update/:id", middlewares.AuthJWT(), tp.Update)
+		tpGroup.PUT("/update/:id", middlewares.AuthJWT(), tp.Update)
 
-		tpgroup.DELETE("/delete/:id", middlewares.AuthJWT(), tp.Delete)
+		tpGroup.DELETE("/delete/:id", middlewares.AuthJWT(), tp.Delete)
+	}
+
+	//友情链接分组
+	lkc := new(controllers.LinksController)
+	lkcGroup := v1.Group("/links")
+	{
+		lkcGroup.GET("/index", lkc.Index)
 	}
 }
