@@ -9,27 +9,31 @@ import (
 
 // User 用户模型
 type User struct {
-    models.BaseModel
+	models.BaseModel
 
-    Name     string `json:"name,omitempty"`
-    Email    string `json:"-"`
-    Phone    string `json:"-"`
-    Password string `json:"-"`
+	Name         string `json:"name,omitempty"`
+	City         string `json:"city,omitempty"`
+	Introduction string `json:"introduction,omitempty"`
+	Avatar       string `json:"avatar,omitempty"`
+	Email        string `json:"-"`
+	Phone        string `json:"-"`
+	Password     string `json:"-"`
 
-    models.CommonTimestampsField
+	models.CommonTimestampsField
 }
+
 //创建用户
-func(userModel *User) Create(){
-    database.DB.Create(&userModel)
+func (userModel *User) Create() {
+	database.DB.Create(&userModel)
 }
 
 // ComparePassword 密码是否正确
 func (userModel *User) ComparePassword(_password string) bool {
-    return hash.BcryptCheck(_password, userModel.Password)
+	return hash.BcryptCheck(_password, userModel.Password)
 }
 
 //保存修改数据
-func(userModel *User) Save()(RowsAffected int64){
-   result := database.DB.Save(&userModel)
-    return result.RowsAffected
+func (userModel *User) Save() (RowsAffected int64) {
+	result := database.DB.Save(&userModel)
+	return result.RowsAffected
 }
