@@ -5,7 +5,6 @@ import (
 	"Gohub/app/requests"
 	"Gohub/pkg/auth"
 	"Gohub/pkg/response"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -33,6 +32,7 @@ func (ctrl *UsersController) Index(c *gin.Context) {
 	})
 }
 
+//UpdateProfile 编辑个人资料
 func (ctrl *UsersController) UpdateProfile(c *gin.Context) {
 	//验证请求参数
 	request := requests.UserUpdateProfileRequest{}
@@ -50,4 +50,23 @@ func (ctrl *UsersController) UpdateProfile(c *gin.Context) {
 	} else {
 		response.Abort500(c, "更新失败,请稍后尝试")
 	}
+}
+
+//UpdateEmail 修改邮箱地址
+func (ctrl *UsersController) UpdateEmail(c *gin.Context) {
+	//获取参数并验证
+	request := requests.UserUpdateEmailRequest{}
+	if ok := requests.Validate(c, &request, requests.UserUpdateEmail); !ok {
+		return
+	}
+
+	userModel := auth.CurrentUser(c)
+	userModel.Email = request.Email
+	rowAffected := userModel.Save()
+	if rowAffected > 0 {
+		response.Data(c, userModel)
+	} else {
+		response.Abort500(c, "修改失败,请稍后尝试")
+	}
+
 }

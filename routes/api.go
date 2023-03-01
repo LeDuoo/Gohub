@@ -73,6 +73,7 @@ func RegisterAPIRoutes(r *gin.Engine) {
 		//获取所有用户列表
 		userGroup.GET("", uc.Index)
 		userGroup.PUT("/update", middlewares.AuthJWT(), uc.UpdateProfile)
+		userGroup.PUT("/update-email", middlewares.AuthJWT(), uc.UpdateEmail)
 	}
 
 	//分类控制器
