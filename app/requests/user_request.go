@@ -18,6 +18,11 @@ type UserUpdateEmailRequest struct {
 	VerifyCode string `json:"verify_code,omitempty" valid:"verify_code"`
 }
 
+type UserUpdatePhoneRequest struct {
+	Phone      string `json:"phone,omitempty" valid:"phone"`
+	VerifyCode string `json:"verify_code,omitempty" valid:"verify_code"`
+}
+
 func UserUpdateProfile(data interface{}, c *gin.Context) map[string][]string {
 
 	//查询用户名重复时,过滤掉当前用户ID
@@ -78,5 +83,40 @@ func UserUpdateEmail(data interface{}, c *gin.Context) map[string][]string {
 	errs := validate(data, rules, messages)
 	_data := data.(*UserUpdateEmailRequest)
 	errs = validators.ValidateVerifyCode(_data.Email, _data.VerifyCode, errs)
+	return errs
+}
+
+func UserUpdatePhone(data interface{}, c *gin.Context) map[string][]string {
+	//查询当前用户
+	userModel := auth.CurrentUser(c)
+	rules := govalidator.MapData{
+		"phone": []string{
+			"required",
+			"digits:11",
+			"not_exists:users,phone," + userModel.GetStringID(),
+			"not_in:" + userModel.Phone,
+		},
+		"verify_code": []string{
+			"required",
+			"digits:6",
+		},
+	}
+	messages := govalidator.MapData{
+		"phone": []string{
+			"required:手机号为必填项，参数名称 phone",
+			"digits:手机号长度必须为 11 位的数字",
+			"not_exists:手机号已被占用",
+			"not_in:新的手机与老手机号一致",
+		},
+		"verify_code": []string{
+			"required:验证码答案必填",
+			"digits:验证码长度必须为 6 位的数字",
+		},
+	}
+
+	errs := validate(data, rules, messages)
+	_data := data.(*UserUpdatePhoneRequest)
+	errs = validators.ValidateVerifyCode(_data.Phone, _data.VerifyCode, errs)
+
 	return errs
 }
