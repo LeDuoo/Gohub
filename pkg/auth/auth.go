@@ -9,8 +9,8 @@ import (
 )
 
 // Attempt 账号密码登录
-func Attempt(phone string, password string) (user.User, error) {
-	userModel := user.GetByMutil(phone)
+func Attempt(name string, password string) (user.User, error) {
+	userModel := user.GetByMutil(name)
 
 	if userModel.ID == 0 {
 		return user.User{}, errors.New("账号不存在")
