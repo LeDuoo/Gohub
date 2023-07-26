@@ -101,8 +101,7 @@ func (ctrl *UsersController) UpdateUserPassword(c *gin.Context) {
 
 	//入参验证成功,检测密码是否正确
 	userModel := auth.CurrentUser(c)
-	_, err := auth.Attempt(userModel.Name, userModel.Password)
-
+	_, err := auth.Attempt(userModel.Name, request.Password)
 	if err != nil {
 		response.Unauthorized(c, "原密码不正确")
 	} else {
