@@ -4,6 +4,8 @@ import (
 	"Gohub/app/models/user"
 	"Gohub/app/requests"
 	"Gohub/pkg/auth"
+	"Gohub/pkg/config"
+	"Gohub/pkg/file"
 	"Gohub/pkg/response"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -92,6 +94,7 @@ func (ctrl *UsersController) UpdatePhone(c *gin.Context) {
 	}
 }
 
+//UpdateUserPassword 修改密码
 func (ctrl *UsersController) UpdateUserPassword(c *gin.Context) {
 	request := requests.UserUpdatePasswordRequest{}
 
@@ -113,5 +116,24 @@ func (ctrl *UsersController) UpdateUserPassword(c *gin.Context) {
 			response.Abort500(c, "修改失败,稍后尝试")
 		}
 	}
+}
 
+//UpdateAvatar 修改头像
+func (ctrl *UsersController) UpdateAvatar(c *gin.Context) {
+	request := requests.UserUpdateAvatarRequest{}
+	if ok := requests.Validate(c, &request, requests.UserUpdateAvatar); !ok {
+		return
+	}
+
+	avatar, err := file.SaveUploadAvatar(c, request.Avatar)
+	if err != nil {
+		response.Abort500(c, "上传头像失败，请稍后尝试~")
+		return
+	}
+
+	currentUser := auth.CurrentUser(c)
+	currentUser.Avatar = config.GetString("app.url") + "/" + avatar
+	currentUser.Save()
+
+	response.Data(c, currentUser)
 }
